@@ -1,17 +1,28 @@
-import { List } from "@/components/List"
+import { List, Item } from "@/components/List";
+import rawData from "../../db/data.json";
 
-const getData = async () => {
-  const res = await fetch('http://localhost:3500/data')
-  const data = await res.json()
-  return data
+interface RawData {
+  data: {
+    id: number;
+    artist: string;
+    title: string;
+    sequence: number;
+  }[];
 }
 
 export default async function Home() {
-  const data = await getData()
+  const typedData: RawData = rawData;
+
+  const items: Item[] = typedData.data.map((item) => ({
+    id: item.id,
+    artist: item.artist,
+    title: item.title,
+    sequence: item.sequence,
+  }));
 
   return (
     <main className="flex min-h-dvh p-8">
-      <List data={data} />
+      <List data={items} />
     </main>
-  )
+  );
 }
